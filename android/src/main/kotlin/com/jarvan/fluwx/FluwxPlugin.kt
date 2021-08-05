@@ -18,13 +18,14 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 
 /** FluwxPlugin */
-class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegistry.NewIntentListener {
+class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.NewIntentListener {
 
     companion object {
 
-        var callingChannel:MethodChannel? = null
+        var callingChannel: MethodChannel? = null
+
         // 主动获取的启动参数
-        var extMsg:String? = null
+        var extMsg: String? = null
 
         @JvmStatic
         fun registerWith(registrar: PluginRegistry.Registrar) {
@@ -47,7 +48,7 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
 
     private var fluwxChannel: MethodChannel? = null
 
-    private fun handelIntent(intent:Intent?){
+    private fun handelIntent(intent: Intent?) {
         val action = intent?.action
         val dataString = intent?.dataString
         if (Intent.ACTION_VIEW == action) {
@@ -75,6 +76,7 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
             call.method == "launchMiniProgram" -> launchMiniProgram(call, result)
             call.method == "subscribeMsg" -> subScribeMsg(call, result)
             call.method == "autoDeduct" -> signAutoDeduct(call, result)
+            call.method == "preSignAutoDeduct" -> preSignAutoDeduct(call, result)
             call.method == "openWXApp" -> openWXApp(result)
             call.method.startsWith("share") -> shareHandler?.share(call, result)
             call.method == "isWeChatInstalled" -> WXAPiHandler.checkWeChatInstallation(result)
@@ -172,6 +174,18 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
                 "sign" to sign,
                 "timestamp" to timestamp,
                 "return_app" to returnApp
+        )
+        result.success(WXAPiHandler.wxApi?.sendReq(req))
+    }
+
+    private fun preSignAutoDeduct(call: MethodCall, result: Result) {
+        val preEntrustWebId = call.argument<String>("pre_entrustweb_id") ?: ""
+        val businessType = 12
+
+        val req = WXOpenBusinessWebview.Req()
+        req.businessType = businessType
+        req.queryInfo = hashMapOf(
+                "pre_entrustweb_id" to preEntrustWebId
         )
         result.success(WXAPiHandler.wxApi?.sendReq(req))
     }

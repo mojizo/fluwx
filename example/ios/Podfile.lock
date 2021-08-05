@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluwx/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   fluwx: 07a55ed66bf3a4961e836a2a411b02dcada32902
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
 

@@ -212,6 +212,14 @@ Future<bool> autoDeDuctWeChat(
   });
 }
 
+/// please read official docs.
+Future<bool> preSignAutoDeDuctWeChat(
+    {required String preEntrustWebId}) async {
+  return await _channel.invokeMethod("preSignAutoDeduct", {
+    'pre_entrustweb_id': preEntrustWebId
+  });
+}
+
 /// Sometimes WeChat  is not installed on users's devices.However we can
 /// request a QRCode so that we can get AuthCode by scanning the QRCode
 /// All required params must not be null or empty
