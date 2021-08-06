@@ -202,7 +202,7 @@ FlutterMethodChannel *channel = nil;
     NSMutableDictionary *paramsFromDart = [NSMutableDictionary dictionaryWithDictionary:call.arguments];
     [paramsFromDart removeObjectForKey:@"businessType"];
     WXOpenBusinessWebViewReq *req = [[WXOpenBusinessWebViewReq alloc] init];
-    NSNumber *businessType = 12;
+    NSNumber *businessType = [NSNumber numberWithInt:12];
     req.businessType = [businessType unsignedIntValue];
     req.queryInfoDic = paramsFromDart;
     [WXApi sendReq:req completion:^(BOOL done) {
