@@ -68,6 +68,8 @@ FlutterMethodChannel *channel = nil;
         [self handleSubscribeWithCall:call result:result];
     } else if ([@"autoDeduct" isEqualToString:call.method]) {
         [self handleAutoDeductWithCall:call result:result];
+    } else if ([@"preSignAutoDeduct" isEqualToString:call.method]) {
+        [self handlePreSignAutoDeductWithCall:call result:result];
     }else if([@"authByPhoneLogin" isEqualToString:call.method]){
         [_fluwxAuthHandler handleAuthByPhoneLogin:call result:result];
     }else if([@"getExtMsg" isEqualToString:call.method]){
@@ -189,6 +191,18 @@ FlutterMethodChannel *channel = nil;
     [paramsFromDart removeObjectForKey:@"businessType"];
     WXOpenBusinessWebViewReq *req = [[WXOpenBusinessWebViewReq alloc] init];
     NSNumber *businessType = call.arguments[@"businessType"];
+    req.businessType = [businessType unsignedIntValue];
+    req.queryInfoDic = paramsFromDart;
+    [WXApi sendReq:req completion:^(BOOL done) {
+        result(@(done));
+    }];
+}
+
+- (void)handlePreSignAutoDeductWithCall:(FlutterMethodCall *)call result:(FlutterResult)result {
+    NSMutableDictionary *paramsFromDart = [NSMutableDictionary dictionaryWithDictionary:call.arguments];
+    [paramsFromDart removeObjectForKey:@"businessType"];
+    WXOpenBusinessWebViewReq *req = [[WXOpenBusinessWebViewReq alloc] init];
+    NSNumber *businessType = 12;
     req.businessType = [businessType unsignedIntValue];
     req.queryInfoDic = paramsFromDart;
     [WXApi sendReq:req completion:^(BOOL done) {
